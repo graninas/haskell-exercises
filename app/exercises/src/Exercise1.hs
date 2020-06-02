@@ -1,3 +1,5 @@
+-- Exercise 1: Serialization
+
 -- Task 1:
 -- * Serialize and deserialize the johnDoe person to string with Show / Read functionality.
 -- * Write the serialized info about JohnDoe into a text file.
@@ -14,7 +16,7 @@
 
 {-# LANGUAGE DeriveAnyClass #-}
 
-module Excercise1 where
+module Exercise1 where
 
 import Data.Aeson
 import GHC.Generics (Generic)
@@ -38,6 +40,6 @@ johnDoe :: Person
 johnDoe = Person "John" "Doe" 32
 
 
-excercise1 :: IO ()
-excercise1 = do
+exercise1 :: IO ()
+exercise1 = do
   putStrLn "Put your code here."

@@ -1,4 +1,4 @@
-name:                excercises
+name:                exercises
 version:             1.0.0.0
 license:             BSD3
 
@@ -59,7 +59,7 @@ library:
   - -fhide-source-paths
 
 executables:
-  excercises:
+  exercises:
     main:                Main.hs
     source-dirs:         src/
     ghc-options:
