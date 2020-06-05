@@ -26,18 +26,73 @@ data Address = Address
   , city        :: String
   , postalIndex :: String
   }
+  deriving (Show, Read, Eq, Generic, ToJSON, FromJSON)
 
 data Person = Person
   { firstName :: String
   , lastName  :: String
   , age       :: Int
-  -- , address   :: Address
+  , address   :: Address
   }
   deriving (Show, Read, Eq, Generic, ToJSON, FromJSON)
 
 
+
+
+instance ToJSON Address where
+  toJSON (Address { street = street, city = city, postalIndex = postalIndex }) =
+    object [ "street" .= street
+           , "city"  .= city
+           , "postalIndex" .= postalIndex
+            ]
+
+instance ToJSON Person where
+  toJSON (Person { firstName = firstName, lastName = lastName, age = age, address = Address }) =
+    object [ "first_name" .= firstName
+           , "last_name"  .= lastName
+           , "age"        .= age
+           , "address"    .=? Address
+           ]
+
+
+
+instance FromJSON Address where
+  parseJSON = withObject Address $ \o -> do
+    street <- o .: "street"
+    city <- o .: "city"
+    postalIndex <- o .: "postalIndex"
+    return (Address street city postalIndex)
+
+instance FromJSON Person where
+  parseJSON = withObject Person $ \o -> do
+    firstName <- o .: "firstName"
+    lastName <- o .: "lastName"
+    age <- o .: "age"
+    address <- o .:? "address"
+    return (Person firstName lastName age Address street city postalIndex)
+
+
+
+
+
+
+jasonJSON :: LB.ByteString
+karlJSON = Person "Jason" "Jam" 49
+
+
+johnDoe_Address :: Address
+johnAddress = Address "123 Avalon" "Evanston" "94536"
+
+johnnyD_Address :: Address
+johnnyAddress = Address "321 Morningside" "Millvale" "36219"
+
 johnDoe :: Person
-johnDoe = Person "John" "Doe" 32
+johnDoe = Person "John" "Doe" 32 johnDoe_Address--Address "123 Avalon" "Evanston" "94536"
+
+johnnyD :: Person
+johnnyD = Person "Johnny" "D." 33 Address "321 Morningside" "Millvale" "36219"
+
+
 
 
 exercise1 :: IO ()
